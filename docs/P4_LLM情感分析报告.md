@@ -1,6 +1,6 @@
 # P4 报告：LLM 评论情感分析 + 幻觉验证
 
-> 分析人：祁思源（卿时彧） · AI 协作：WorkBuddy· 模型：DeepSeek-chat
+> 分析人：祁思源（卿时彧） · AI 协作：WorkBuddy · 模型：DeepSeek-chat
 > 执行成本：1,000 条评论 / 50 批 API 调用 / 1 分 45 秒 / 费用约几毛钱人民币
 > 密钥管理：本地 `.api_key` 文件，已列入 `.gitignore`，不进任何交付物
 
