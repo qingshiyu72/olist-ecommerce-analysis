@@ -58,6 +58,10 @@ if pending:
     user_q = pending
 
 if user_q and key_input:
+    # 先取历史再追加当前提问：chat() 内部会 append 当前提问，
+    # 若把当前提问也放进 history 会导致同一句话被发两遍
+    history = [{"role": m["role"], "content": m["content"]}
+               for m in st.session_state.messages]
     st.session_state.messages.append({"role": "user", "content": user_q})
     with st.chat_message("user"):
         st.markdown(user_q)
@@ -65,8 +69,6 @@ if user_q and key_input:
     with st.chat_message("assistant"):
         with st.spinner("思考中…（取数 → 归因 → 结论）"):
             try:
-                history = [{"role": m["role"], "content": m["content"]}
-                           for m in st.session_state.messages if m["role"] != "trace"]
                 answer, trace = chat(user_q, key_input, history)
             except Exception as e:
                 answer = f"出错了：{e}\n\n请检查 API Key 是否有效（上方侧边栏可更新）。"
