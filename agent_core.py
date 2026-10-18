@@ -27,6 +27,14 @@ def load_key() -> str:
     return open(key_path, encoding="utf-8").read().strip()
 
 
+def basis_line(trace: list) -> str:
+    """依据行：由系统按工具调用轨迹生成，不交给模型自述（否则可能编造来源）"""
+    if not trace:
+        return "依据：本轮未调用取数工具（结论可能未基于数据库）"
+    tools = list(dict.fromkeys(t["tool"] for t in trace))
+    return f"依据：调用 {len(trace)} 次工具（{'、'.join(tools)}）· 数据源 olist.db · GMV 口径含运费"
+
+
 def chat(user_question: str, key: str, history: list = None) -> tuple:
     """执行一次完整的 Agent 推理。返回 (最终回答, 工具调用轨迹)"""
     messages = [{"role": "system", "content": agent_prompts.SYSTEM_PROMPT}]
@@ -99,6 +107,7 @@ def main():
                 print(f"  [{i}] {t['tool']}  参数={t['args']}")
         print("\n── 回答 ──")
         print(answer)
+        print(f"\n{basis_line(trace)}")
         return
 
     print("AI 经营分析助手（输入 q 退出）")
@@ -114,6 +123,7 @@ def main():
         for t in trace:
             print(f"  ⚙ {t['tool']}({t['args']})")
         print(f"\n助手> {answer}")
+        print(basis_line(trace))
         history.append({"role": "user", "content": q})
         history.append({"role": "assistant", "content": answer})
 

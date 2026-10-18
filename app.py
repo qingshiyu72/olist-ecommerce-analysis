@@ -5,7 +5,7 @@
 import os
 import streamlit as st
 
-from agent_core import chat, load_key
+from agent_core import chat, load_key, basis_line
 
 st.set_page_config(page_title="AI 经营分析助手", page_icon="🛒", layout="wide")
 st.title("🛒 AI 经营分析助手")
@@ -45,6 +45,8 @@ if "messages" not in st.session_state:
 for m in st.session_state.messages:
     with st.chat_message(m["role"]):
         st.markdown(m["content"])
+        if m["role"] == "assistant":
+            st.caption(basis_line(m.get("trace")))
         if m.get("trace"):
             with st.expander(f"🔍 推理过程（调用 {len(m['trace'])} 次工具）"):
                 for i, t in enumerate(m["trace"], 1):
@@ -74,6 +76,7 @@ if user_q and key_input:
                 answer = f"出错了：{e}\n\n请检查 API Key 是否有效（上方侧边栏可更新）。"
                 trace = []
         st.markdown(answer)
+        st.caption(basis_line(trace))
         if trace:
             with st.expander(f"🔍 推理过程（调用 {len(trace)} 次工具）"):
                 for i, t in enumerate(trace, 1):
