@@ -4,8 +4,3 @@
 data/
 __pycache__/
 .ipynb_checkpoints/
-
-# 内部备考材料，不公开
-docs/简历_项目描述.md
-docs/学习地图_判断清单.md
-docs/Step1_执行计划.md

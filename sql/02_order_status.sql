@@ -2,8 +2,7 @@
 -- 模块 02：订单状态分布 — 流失在哪个环节
 -- ============================================================
 -- 【业务问题】下单的订单里，多少真正送达？多少被取消？
--- 【SQL 考点】CASE WHEN · 标量子查询 · 条件聚合（SUM+CASE 等价写法）
--- 【业务解读怎么写】canceled + unavailable 合计约 1.2%，
+-- 【业务解读】canceled + unavailable 合计约 1.2%，
 --   对平台是小钱，但对"取消率环比突然抬头"要敏感——那是体验恶化的信号。
 -- ============================================================
 
@@ -17,8 +16,7 @@ FROM olist_orders
 GROUP BY 1
 ORDER BY cnt DESC;
 
--- 写法 B（进阶）：一行同时看"成交"和"未成交"的月度趋势
--- 考点：SUM(CASE WHEN ...) 条件聚合——面试高频写法
+-- 写法 B（备选）：SUM(CASE WHEN ...) 条件聚合，一行同时看"成交"和"未成交"的月度趋势
 -- SELECT
 --     strftime('%Y-%m', order_purchase_timestamp)              AS year_month,
 --     SUM(CASE WHEN order_status = 'delivered'  THEN 1 ELSE 0 END) AS delivered_cnt,

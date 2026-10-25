@@ -7,13 +7,12 @@
 --   2. GMV = price + freight_value（商品价 + 运费）
 --   3. order_items 是行级表：一单多商品会有多行，
 --      所以订单数必须 COUNT(DISTINCT order_id)，不能 COUNT(*)
--- 【SQL 考点】strftime 日期截断 · 多表 JOIN · DISTINCT 计数 · GROUP BY
--- 【业务解读怎么写】看 2018 年月度 GMV 是否还在增长；
+-- 【业务解读】看 2018 年月度 GMV 是否还在增长；
 --   AOV 突然跳变通常是大促或品类结构变化，值得下钻。
 -- ============================================================
 
 SELECT
-    strftime('%Y-%m', o.order_purchase_timestamp) AS year_month,   -- 考点：日期截成"年-月"
+    strftime('%Y-%m', o.order_purchase_timestamp) AS year_month,   -- 日期截成"年-月"
     COUNT(DISTINCT o.order_id)                    AS orders,       -- 订单数（去重！）
     ROUND(SUM(oi.price + oi.freight_value), 2)    AS gmv,          -- 月度 GMV
     ROUND(SUM(oi.price + oi.freight_value)

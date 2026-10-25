@@ -3,9 +3,8 @@
 -- ============================================================
 -- 【业务问题】钱主要从哪些品类来？头部集中度多高？
 -- 【口径说明】COALESCE 优先用英文品类名，翻译表没有的回退葡语原名
--- 【SQL 考点】CTE(WITH) · 窗口函数 SUM() OVER / ROW_NUMBER() · LEFT JOIN
---   累计占比是 ABC 分析的灵魂：A 类 = 累计贡献 ≤80% 的品类
--- 【业务解读怎么写】"health_beauty 等 X 个品类贡献了 80% 收入"
+--   累计占比是 ABC 分析的核心：A 类 = 累计贡献 ≤80% 的品类
+-- 【业务解读】"health_beauty 等 X 个品类贡献了 80% 收入"
 --   —— 这就是帕累托（二八法则）的量化表达。
 -- ============================================================
 
@@ -53,5 +52,5 @@ ORDER BY rn
 LIMIT 15;        -- 先看 Top15，完整 73 行可去掉 LIMIT 导出
 
 -- 【预期结果】Top1 应为 health_beauty / watches_gifts / bed_bath_table 一档
--- 【知识点】SUM(revenue) OVER (ORDER BY revenue DESC) = "滚动累计"，
---   这是窗口函数最实用的形态之一，Step 2 的 Agent 也会直接复用这段。
+-- 【实现说明】SUM(revenue) OVER (ORDER BY revenue DESC) 实现"滚动累计"占比，
+--   Step 2 的 Agent 取数工具也复用这段逻辑。

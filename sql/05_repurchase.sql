@@ -4,8 +4,7 @@
 -- 【业务问题】多少比例的客户会回来买第二次？
 -- 【口径说明】复购率按 customer_unique_id 口径（见质检坑6）：
 --   复购率 = 下单 ≥2 次的客户数 / 总客户数
--- 【SQL 考点】CASE WHEN 计数 · HAVING vs WHERE 的区别 · 先聚合后过滤
--- 【业务解读怎么写】Olist 这类平台复购率天然偏低（平台型电商），
+-- 【业务解读】Olist 这类平台复购率天然偏低（平台型电商），
 --   报告里要和行业常识对照着讲，别把它当异常。
 -- ============================================================
 
@@ -26,12 +25,4 @@ SELECT
         / COUNT(*), 2)                                              AS repeat_rate_pct
 FROM cust_orders;
 
--- 【进阶练习】复购客户 vs 一次性客户，平均间隔多久回来？
--- SELECT AVG(gap_days) FROM (
---     SELECT c.customer_unique_id,
---            julianday(MIN(o2.order_purchase_timestamp))
---          - julianday(MIN(o1.order_purchase_timestamp)) AS gap_days
---     FROM ...
---     GROUP BY 1 HAVING COUNT(DISTINCT o.order_id) >= 2
--- );
 -- 【预期结果】复购率大约在 3% 上下——低是正常的，解释原因比数字本身重要。
