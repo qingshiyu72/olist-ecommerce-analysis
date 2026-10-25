@@ -67,7 +67,7 @@ flowchart TD
     F --> RPT[L4 自动化日报 build_daily_report.py<br/>门禁结论 + 近 7 日异动判定]
 
     F --- L[SQL 指标层 sql/<br/>01~11：GMV / RFM / 复购 / 履约 / 口碑 / 归因]
-    L --- R[报告层 docs/ + output/charts<br/>4 份报告 + 6 张图表]
+    L --- R[报告层 docs/ + output/charts<br/>5 份报告 + 6 张图表]
     A -->|结论 + 工具调用轨迹| U
 ```
 
@@ -76,8 +76,8 @@ flowchart TD
 ```
 olist-analysis/
 ├── data/                      # 9 张原始 CSV（来源见「数据获取」，已 gitignore）
-├── sql/                       # 01~11 分析模块（每个含口径说明与考点注释）
-├── docs/                      # 4 份报告：质检 / 经营分析 / 归因 / LLM 情感
+├── sql/                       # 01~11 分析模块（每个含口径说明注释）
+├── docs/                      # 5 份报告：质检 / 经营分析 / 归因 / LLM 情感 / 显著性检验
 ├── output/                    # SQL 结果 CSV + charts/ 6 张图
 ├── reports/                   # 自动生成的日报（Markdown）
 │
@@ -93,6 +93,7 @@ olist-analysis/
 │
 │   ── 分析层 ──
 ├── sentiment_analysis.py      # LLM 情感分析 + 幻觉验证（交叉比对真实评分）
+├── delivery_significance_test.py  # 配送时效 × 评分的显著性检验（P5 报告）
 ├── make_charts.py             # 6 张图表生成
 │
 │   ── Agent 层 ★ ──
@@ -307,6 +308,7 @@ python build_daily_report.py 2018-08-15      # 指定日期
 - [P1 数据质检报告](docs/P1_数据质检报告.md)
 - [P3 归因分析报告](docs/P3_归因分析报告.md)
 - [P4 LLM 情感分析报告](docs/P4_LLM情感分析报告.md)
+- [P5 配送时效与评分的显著性检验](docs/P5_配送时效与评分的显著性检验.md)
 
 ## 技术栈
 
